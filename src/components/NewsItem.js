@@ -1,18 +1,23 @@
 import React, { Component } from 'react'
-
 export class NewsItem extends Component {
-    
+
     render() {
-        let {title,discription,imageurl,newsurl}=this.props
+        let { title, discription, imageurl, newsurl, author, Time ,source} = this.props
         return (
             <div>
-                <div className="card my-2" style={{width: "18rem"}}>
-                    <img src={imageurl} className="card-img-top" alt="..."/>
-                        <div className="card-body">
-                            <h5 className="card-title">{title}</h5>
-                            <p className="card-text">{discription}</p>
-                            <a href={newsurl} className="btn btn-success">Read More</a>
-                        </div>
+                <div className="card my-2" >
+                    <span class="position-absolute top-0  translate-middle badge rounded-pill bg-danger" style={{left:"90%",zIndex:"1"}}>
+                        {source}
+                       
+                    </span>
+                    <img src={imageurl} className="card-img-top" alt="...Loading.." />
+                    <div className="card-body">
+                        <h5 className="card-title">{title}</h5>
+                        <p className="card-text">{discription}</p>
+                        <p className='my-0'>{author}</p>
+                        <p >{new Date(Time).toGMTString()}</p>
+                        <a href={newsurl} className="btn btn-success">Read More</a>
+                    </div>
                 </div>
             </div>
         )
