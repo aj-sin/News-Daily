@@ -17,45 +17,68 @@ export class News extends Component {
     static defaultProps = {
         country: 'in',
         pagesize: 9,
-        category: ''
+        category: 'general'
       }
+
+
+     updatenews=async ()=>{
+        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=049e0196f4584429ae9a41b7da6574d5&page=${this.state.page}&pagesize=${this.props.pagesize}`
+        this.setState({loading:true})
+        let data = await fetch(url)
+        let parsedata = await data.json()
+        this.setState({loading:false})
+
+        this.setState({
+            
+            article: parsedata.articles,
+            totalResults: parsedata.totalResults 
+        })
+    }
 
     //this is important because it load the initial page of the website
     async componentDidMount() {
-        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=049e0196f4584429ae9a41b7da6574d5&page=1&pagesize=${this.props.pagesize}`
-        let data = await fetch(url)
-        let parsedata = await data.json()
-        // console.log(parsedata)
-        this.setState({ article: parsedata.articles, totalResults: parsedata.totalResults })
+        this.updatenews()
+        // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=049e0196f4584429ae9a41b7da6574d5&page=1&pagesize=${this.props.pagesize}`
+        // let data = await fetch(url)
+        // let parsedata = await data.json()
+        // // console.log(parsedata)
+        // this.setState({ article: parsedata.articles, totalResults: parsedata.totalResults })
     }
 
 
 
 
     handleprev = async () => {
-        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=049e0196f4584429ae9a41b7da6574d5&page=${this.state.page - 1}&pagesize=${this.props.pagesize}`
-        this.setState({loading:true})
-        let data = await fetch(url)
-        let parsedata = await data.json()
-        this.setState({loading:false})
-
         this.setState({
-            page: this.state.page - 1,
-            article: parsedata.articles
+            page: this.state.page - 1
         })
+        this.updatenews()
+        // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=049e0196f4584429ae9a41b7da6574d5&page=${this.state.page}&pagesize=${this.props.pagesize}`
+        // this.setState({loading:true})
+        // let data = await fetch(url)
+        // let parsedata = await data.json()
+        // this.setState({loading:false})
+
+        // this.setState({
+        //     page: this.state.page - 1,
+        //     article: parsedata.articles
+        // })
     }
     handlenext = async () => {
-        console.log("next")
-        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=049e0196f4584429ae9a41b7da6574d5&page=${this.state.page + 1}&pagesize=${this.props.pagesize}`
-        this.setState({loading:true})
-        let data = await fetch(url)
-        let parsedata = await data.json()
-        this.setState({loading:false})
-        // console.log(parsedata)
         this.setState({
-            page: this.state.page + 1,
-            article: parsedata.articles
+            page: this.state.page + 1
         })
+        this.updatenews()
+        // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=049e0196f4584429ae9a41b7da6574d5&page=${this.state.page}&pagesize=${this.props.pagesize}`
+        // this.setState({loading:true})
+        // let data = await fetch(url)
+        // let parsedata = await data.json()
+        // this.setState({loading:false})
+        // // console.log(parsedata)
+        // this.setState({
+        //     page: this.state.page + 1,
+        //     article: parsedata.articles
+        // })
     }
     render() {
 

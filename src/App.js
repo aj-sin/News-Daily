@@ -11,6 +11,8 @@ import {
 
 
 export default class App extends Component {
+   pagesize=9
+   country="in"
   render() {
     return (
       <>
@@ -22,14 +24,14 @@ export default class App extends Component {
 
 
             <Route exact path="/about" element={<About key ='about'/>} />
-            <Route exact path="/" element={<News key ='general'  pagesize={9} category={'general'} country={'us'}/>} />
-            <Route exact path="/business" element={<News key ='business'  pagesize={9} category={'business'} country={'us'}/>} />
-            <Route exact path="/entertainment" element={<News key ='entertainment'  pagesize={9} category={'entertainment'} country={'us'}/>} />
-            <Route exact path="/general" element={<News key ='general'  pagesize={9} category={'general'} country={'us'}/>} />
-            <Route exact path="/health" element={<News key ='health'  pagesize={9} category={'health'} country={'us'}/>} />
-            <Route exact path="/science" element={<News  key ='science' pagesize={9} category={'science'} country={'us'}/>} />
-            <Route exact path="/sports" element={<News key ='sports'  pagesize={9} category={'sports'} country={'us'}/>} />
-            <Route exact path="/technology" element={<News  key ='technology' pagesize={9} category={'technology'} country={'us'}/>} />
+            <Route exact path="/" element={<News key ='general'  pagesize={this.pagesize} category={'general'} country={this.country}/>} />
+            <Route exact path="/business" element={<News key ='business'  pagesize={this.pagesize} category={'business'} country={this.country}/>} />
+            <Route exact path="/entertainment" element={<News key ='entertainment'  pagesize={this.pagesize} category={'entertainment'} country={this.country}/>} />
+            <Route exact path="/general" element={<News key ='general'  pagesize={this.pagesize} category={'general'} country={this.country}/>} />
+            <Route exact path="/health" element={<News key ='health'  pagesize={this.pagesize} category={'health'} country={this.country}/>} />
+            <Route exact path="/science" element={<News  key ='science' pagesize={this.pagesize} category={'science'} country={this.country}/>} />
+            <Route exact path="/sports" element={<News key ='sports'  pagesize={this.pagesize} category={'sports'} country={this.country}/>} />
+            <Route exact path="/technology" element={<News  key ='technology' pagesize={this.pagesize} category={'technology'} country={this.country}/>} />
 
 
           </Routes>
