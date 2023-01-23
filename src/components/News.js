@@ -1,92 +1,80 @@
-import React, { Component } from 'react'
+import React, { useEffect,useState } from 'react'
 import NewsItem from './NewsItem'
 import Spinner from './Spinner'
 import logo1 from "./newdaily.png"
 import InfiniteScroll from "react-infinite-scroll-component";
 
 
-export class News extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            article: [],
-            loading: false,
-            page: 1,
-            totalResults: 0,
-        }
-    }
-
-    static defaultProps = {
-        country: 'in',
-        pagesize: 9,
-        category: 'general'
-    }
+const News =(props)=> {
 
 
-    updatenews = async () => {
-        this.props.setProgress(10)
-        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=049e0196f4584429ae9a41b7da6574d5&page=${this.state.page}&pagesize=${this.props.pagesize}`
-        this.setState({ loading: true })
-        this.props.setProgress(30)
+    const [article, setArticle] = useState([])
+    const [loading, setLoading] = useState(false)
+    const [page, setPage] = useState(1)
+    const [totalResults, setTotalResults] = useState(0)
+    
+
+    
+
+
+    const updatenews = async () => {
+        props.setProgress(10)
+        let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=049e0196f4584429ae9a41b7da6574d5&page=${ page}&pagesize=${props.pagesize}`
+        setLoading(true )
+        props.setProgress(30)
         let data = await fetch(url)
         let parsedata = await data.json()
-        this.setState({ loading: false })
-        this.props.setProgress(90)
-
-        this.setState({
-
-            article: parsedata.articles,
-            totalResults: parsedata.totalResults
-        })
-        this.props.setProgress(100)
+        setLoading(false )
+        props.setProgress(90)
+        setArticle(parsedata.articles)
+        setTotalResults(parsedata.totalResults)
+        
+        props.setProgress(100)
     }
 
     //this is important because it load the initial page of the website
-    async componentDidMount() {
-        this.updatenews()
-        this.setState({
-            page: this.state.page + 1
-        })
 
-    }
+    useEffect(() => {
+      updatenews();
+      setPage(page+1)
+    }, [])
+    
+    
 
-    fetchMoreData = async () => {
-        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=049e0196f4584429ae9a41b7da6574d5&page=${this.state.page}&pagesize=${this.props.pagesize}`
-        this.setState({ loading: true })
+    const fetchMoreData = async () => {
+        let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=049e0196f4584429ae9a41b7da6574d5&page=${ page}&pagesize=${props.pagesize}`
+        setLoading(true )
 
         let data = await fetch(url)
         let parsedata = await data.json()
+        setArticle(article.concat(parsedata.articles))
+        setLoading(false )
+        setPage(page+1)
 
-        this.setState({
-
-            article: this.state.article.concat(parsedata.articles),
-            loading: false,
-            page: this.state.page + 1
-        })
+        
 
     }
 
 
 
 
-    render() {
+    
 
         return (
             <>
-                <h1 className="text-center">News Daily- Top Headlines</h1>
+                <h1 className="text-center my-60" style={{marginTop: "65px"}} >News Daily- Top Headlines</h1>
 
                 <InfiniteScroll
-                    dataLength={this.state.article.length}
-                    next={this.fetchMoreData}
-                    hasMore={this.state.article.length !== this.state.totalResults}
-                    loader={this.state.loading ? <Spinner /> : true}
+                    dataLength={ article.length}
+                    next={fetchMoreData}
+                    hasMore={ article.length !==  totalResults}
+                    loader={ loading ? <Spinner /> : true}
                 >
                     <div className="container">
 
                         {<div className="row">
-                            {this.state.loading && <Spinner />}
-                            {this.state.article.map((element) => {
+                            { loading && <Spinner />}
+                            { article.map((element) => {
 
                                 return <div className="col-md-4" key={element.url}>
                                     <NewsItem title={element.title} discription={element.description}
@@ -102,7 +90,12 @@ export class News extends Component {
 
             </>
         )
-    }
+    
 }
 
+News.defaultProps = {
+    country: 'in',
+    pagesize: 9,
+    category: 'general'
+}
 export default News
